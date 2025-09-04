@@ -158,7 +158,7 @@ const Footer = () => {
             <p className="text-center text-base text-body-color dark:text-white">
               By{" "}
               <a
-                href="https://netlify.qamarlabs.app"
+                href="https://qamarlabs.netlify.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary"
