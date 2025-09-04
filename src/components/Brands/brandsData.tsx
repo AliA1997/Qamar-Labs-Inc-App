@@ -11,7 +11,7 @@ const brandsData: Brand[] = [
   {
     id: 1,
     name: "QamarLabs",
-    href: "https://netlify.qamarlabs.app",
+    href: "https://qamarlabs.netlify.app",
     image: "/images/brands/logo.png",
     imageLight: "/images/brands/logo.png",
   },

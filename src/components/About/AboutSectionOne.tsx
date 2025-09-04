@@ -34,7 +34,7 @@ const AboutSectionOne = () => {
                 data-wow-delay=".15s"
               >
               <h5 className="mb-4 text-xl font-bold leading-tight! text-black dark:text-white sm:text-2xl md:text-[1.5rem]">
-                Our Guiding Principles (Our "Four Pillars")
+                {`Our Guiding Principles (Our "Four Pillars")`}
               </h5>
                 <div className="mx-[-12px] flex flex-wrap">
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-3/4">
