@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function() {
+export default function AlSaqrPrivacyPolicyPage() {
     return (
         <div>
             <ScrollUp />

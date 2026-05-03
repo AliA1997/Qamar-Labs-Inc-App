@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Privacy Policy for the Musuah App",
   // other metadata
 };
-export default function() {
+export default function MusuahPrivacyPolicyPage() {
     return (
         <div>
             <ScrollUp />

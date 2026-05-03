@@ -24,7 +24,7 @@ export default function DawaarPrivacyPolicy() {
 
         <Section title="1. Introduction">
           <Para>
-            Welcome to Dawaar ("we", "us", or "our"). This Privacy Policy
+            Welcome to Dawaar <>{`("we", "us", or "our")`}</>. This Privacy Policy
             explains how we collect, use, and protect your information when you
             play our mobile game. By using Dawaar, you agree to the practices
             described here.
@@ -106,7 +106,7 @@ export default function DawaarPrivacyPolicy() {
         <Section title="8. Changes to This Policy">
           <Para>
             We may update this Privacy Policy occasionally. Significant changes
-            will update the "Last updated" date at the top of this page.
+            will update the <>{`"Last updated"`}</> date at the top of this page.
             Continued use of the game after changes constitutes acceptance of
             the revised policy.
           </Para>

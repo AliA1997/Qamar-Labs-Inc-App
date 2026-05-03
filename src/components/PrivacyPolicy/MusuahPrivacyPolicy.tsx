@@ -307,7 +307,7 @@ const definitions = [
 const LAST_UPDATED = "December 2, 2025";
 const APP_NAME = "Mūsūʿah - Wikipedia Alternative";
 
-export default function QamarLabsPrivacyPolicy() {
+export default function MusuahPrivacyPolicy() {
   return (
     <section className="pt-35 pb-20 md:pt-40 xl:pt-46">
       <div className="mx-auto max-w-2xl">

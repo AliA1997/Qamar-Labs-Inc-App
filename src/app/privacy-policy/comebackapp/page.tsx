@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-export default function() {
+export default function TheComebackAppPrivacyPolicyPage() {
     return (
         <div>
             <ScrollUp />

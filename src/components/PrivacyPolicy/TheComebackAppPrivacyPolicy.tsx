@@ -26,7 +26,7 @@ export default function ComebackPrivacyPolicyPage() {
 
         <Section title="Overview">
           <Para>
-            {APP_NAME} ("the App", "we", "our") is committed to protecting
+            {APP_NAME} <>{`("the App", "we", "our")`}</> is committed to protecting
             your privacy. This policy explains what information is collected,
             how it is used, and your rights regarding that information.
           </Para>

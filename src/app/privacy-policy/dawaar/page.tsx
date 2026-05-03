@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Privacy Policy for the Dawaar Game",
   // other metadata
 };
-export default function() {
+export default function DawaarPrivacyPolicyPage() {
     return (
         <div>
             <ScrollUp />
