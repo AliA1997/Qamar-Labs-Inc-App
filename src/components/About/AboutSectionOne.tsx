@@ -25,7 +25,7 @@ const AboutSectionOne = () => {
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
                 title="About Our Mission"
-                paragraph="Qamar Labs is a worker-owned cooperative dedicated to developing open-source solutions that serve the Earth and all its inhabitants. We operate on the foundational belief that the sustenance of humanity and the protection of the environment are inseparable sacred trusts (amanah)."
+                paragraph="Qamar Labs is a worker-owned cooperative building software for a world whose expectations keep moving. Being owned by the people who do the work is what makes the rest possible: we answer to the product and to the communities it serves, so we can afford the patience that careful, spec-driven engineering demands."
                 mb="44px"
               />
 
@@ -38,10 +38,10 @@ const AboutSectionOne = () => {
               </h5>
                 <div className="mx-[-12px] flex flex-wrap">
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-3/4">
-                    <List text="Oneness & Interconnection" />
-                    <List text="Community Over Capital" />
-                    <List text="Stewardship of the Earth" />
-                    <List text="Social Justice & Dignity" />
+                    <List text="Cutting edge solutions to new expectations" />
+                    <List text="Continuous wisdom and care for your product" />
+                    <List text="Systems that stay iterable in the AI era" />
+                    <List text="A spec-driven approach to new problems" />
                   </div>
                 </div>
               </div>

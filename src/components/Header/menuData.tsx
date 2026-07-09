@@ -20,25 +20,25 @@ const menuData: Menu[] = [
     submenu: [
         {
           id: 1,
-          title: "Dawaar(Work in Progress)",
+          title: "Dawaar (In Progress)",
           path: "/privacy-policy/dawaar",
           newTab: true,
         },
         {
           id: 2,
-          title: "Al Saqr(Work in Progress)",
+          title: "Al Saqr (In Progress)",
           path: "/privacy-policy/alsaqr",
           newTab: true,
         },
         {
           id: 3,
-          title: "Mūsūʿah",
+          title: "Mūsūʿah (In Progress)",
           path: "/privacy-policy/musuah",
           newTab: true,
         },
         {
           id: 4,
-          title: "The Comeback App",
+          title: "The Comeback App (In Progress)",
           path: "/privacy-policy/comebackapp",
           newTab: true,
         },

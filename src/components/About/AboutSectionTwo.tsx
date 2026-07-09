@@ -31,8 +31,10 @@ const AboutSectionTwo = () => {
                   For Humanity
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Open-source platforms for cooperative management, free educational resources, 
-                  decentralized communication tools for underserved areas, and software for transparent, community-led governance.
+                  Products people can actually use: interfaces that hold their shape on a
+                  budget phone, tools that respect attention and privacy, and platforms for
+                  transparent, community-led governance. We specify who a system is for
+                  before we decide what it does.
                 </p>
               </div>
               <div className="mb-9">
@@ -40,8 +42,10 @@ const AboutSectionTwo = () => {
                   For the Environment
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Open-source designs for solar-powered water pumps, agricultural monitoring systems, 
-                  tools for tracking and reducing waste, and accessible data platforms for environmental advocacy.
+                  Software that costs the Earth less to run: lean systems that ask little of
+                  hardware and bandwidth, open designs for solar-powered infrastructure, and
+                  accessible data platforms for environmental advocacy. Efficiency is a
+                  design constraint we write down, not a happy accident.
                 </p>
               </div>
               <div className="mb-1">
@@ -49,7 +53,7 @@ const AboutSectionTwo = () => {
                   Our Call
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  We invite developers, designers, and visionaries who believe code is a form of social action to contribute. 
+                  We invite developers, designers, and visionaries who believe code is a form of social action to contribute.
                   Together, we will write the software for a world built on justice, compassion, and shared prosperity.
                 </p>
               </div>
