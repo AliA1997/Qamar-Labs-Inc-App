@@ -19,6 +19,7 @@ Three device-framed recordings of the **Claude Constitution Creator** landed in
 `/public/images/responsive` and two product recordings landed in `/public/images/products`,
 but nothing in `src/` references either directory yet. This spec puts them on the page.
 
+
 ## Implementation Steps
 - Change the homepage to include the new mission, also update multiple sections to reflect the new mission.
   - **Hero** ([src/components/Hero/index.tsx](../src/components/Hero/index.tsx)) — replace the
