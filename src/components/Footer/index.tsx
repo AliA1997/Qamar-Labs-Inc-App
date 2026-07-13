@@ -2,6 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { DEV_EMAIL } from "@/constants/contact";
+
 const Footer = () => {
   return (
     <>
@@ -26,8 +28,17 @@ const Footer = () => {
                     height={30}
                   />
                 </Link>
+                <p className="mb-4 text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                  A worker-owned cooperative building software the spec-driven way.
+                </p>
                 <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  Stay up to date to any new updates.
+                  Talk to a developer:{" "}
+                  <a
+                    href={`mailto:${DEV_EMAIL}`}
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    {DEV_EMAIL}
+                  </a>
                 </p>
                 <div className="flex items-center">
                   <a

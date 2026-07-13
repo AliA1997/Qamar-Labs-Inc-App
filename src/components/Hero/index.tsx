@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+import Moon from "../Common/Moon";
+import Reveal from "../Common/Reveal";
+import { DEV_EMAIL } from "@/constants/contact";
+
 const Hero = () => {
   return (
     <>
@@ -7,19 +11,49 @@ const Hero = () => {
         id="home"
         className="relative z-10 overflow-hidden bg-white pb-16 pt-[120px] dark:bg-gray-dark md:pb-[120px] md:pt-[150px] xl:pb-[160px] xl:pt-[180px] 2xl:pb-[200px] 2xl:pt-[210px]"
       >
+        {/* Qamar (قمر) is Arabic for "moon". The theme is the name.
+            Centred behind the copy, which sits on top of it. */}
+        <Moon className="absolute left-1/2 top-1/2 z-[-1] w-[340px] -translate-x-1/2 -translate-y-1/2 opacity-70 sm:w-[460px] lg:w-[600px] xl:w-[680px]" />
+
+        {/* Scrim. The copy now sits directly on the moon, so the moon has to give ground where
+            they overlap: a radial wash of the page background, strongest behind the text and
+            gone by the limb, keeps contrast up without flattening the moon's edges. Two nodes
+            because the wash has to match whichever theme is active. */}
+        <div
+          className="absolute inset-0 z-[-1] dark:hidden"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 42% at 50% 46%, rgba(255,255,255,0.88) 35%, rgba(255,255,255,0) 72%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 z-[-1] hidden dark:block"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 42% at 50% 46%, rgba(30,35,46,0.88) 35%, rgba(30,35,46,0) 72%)",
+          }}
+        />
+
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
-              <div className="mx-auto max-w-[800px] text-center">
+              <Reveal staggerChildren staggerDelay={110} className="mx-auto max-w-[800px] text-center">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
-                  Cutting Edge Solutions to New Expectations
+                  We Specify Software Before We Build It
                 </h1>
                 <p className="mb-12 text-base leading-relaxed! text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
-                  We take a spec-driven approach to new problems, tend to your
-                  product with continuous wisdom and care, and keep your systems
-                  iterable in the AI era.
+                  Qamar Labs is a worker-owned consultancy practising Spec-Driven
+                  Development. We agree what &ldquo;done&rdquo; means in writing, before a
+                  line of code exists — so what you get is what you asked for, and it stays
+                  iterable long after we hand it over.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+                  <Link
+                    href={`mailto:${DEV_EMAIL}`}
+                    className="inline-block rounded-xs bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/90"
+                  >
+                    Talk to a Developer
+                  </Link>
                   <Link
                     href="https://github.com/QamarLabs"
                     target="_blank"
@@ -28,7 +62,7 @@ const Hero = () => {
                     Go to Github Page
                   </Link>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

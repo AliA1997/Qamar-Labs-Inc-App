@@ -1,11 +1,12 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import Contact from "@/components/Contact";
+import { DEV_EMAIL } from "@/constants/contact";
 
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact Qamar Labs",
-  description: "Contact us to contribute to our mission",
+  description: `Talk to a developer about your project — ${DEV_EMAIL}`,
   // other metadata
 };
 

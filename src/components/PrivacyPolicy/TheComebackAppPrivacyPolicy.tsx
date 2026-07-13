@@ -1,8 +1,10 @@
 import { Bullets, Para, Section } from "./common";
 
+import { SUPPORT_EMAIL } from "@/constants/contact";
+
 const LAST_UPDATED = "May 2, 2026";
 const APP_NAME = "The Comeback App Time Tracker";
-const CONTACT_EMAIL = "support@qamarlabsllc.com";
+const CONTACT_EMAIL = SUPPORT_EMAIL;
 
 
 export default function ComebackPrivacyPolicyPage() {

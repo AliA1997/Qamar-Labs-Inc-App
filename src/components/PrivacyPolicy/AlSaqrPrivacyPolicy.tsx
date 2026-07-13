@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Bullets, Para, Section } from "./common";
 
+import { SUPPORT_EMAIL } from "@/constants/contact";
+
 const LAST_UPDATED = "May 3, 2026";
-const CONTACT_EMAIL = "support@qamarlabsllc.com";
+const CONTACT_EMAIL = SUPPORT_EMAIL;
 const APP_NAME = "AlSaqr - New way to do Social Media";
 export default function AlSaqrPrivacyPolicy() {
   return (

@@ -1,18 +1,30 @@
 # Qamar Labs Inc App
 
-Marketing website for Qamar Labs, a worker-owned IT cooperative building open-source
-software. Single Next.js app deployed as a static-leaning marketing site: a homepage
-composed of stacked sections, an about page, a contact page, and one privacy-policy
-page per shipped product.
+Marketing website for Qamar Labs, a worker-owned IT cooperative that operates as a
+**consultancy specializing in Spec-Driven Development**. Single Next.js app deployed as a
+static-leaning marketing site: a homepage composed of stacked sections, an about page, a
+contact page, and one privacy-policy page per shipped product.
+
+The site sells the method this repo runs on. The five stages in [SDD and Workflow](#sdd-and-workflow)
+are both our internal process and our client-facing offer — **if the site and this file ever
+disagree about the method, the site is lying.** Keep them in sync.
+
+Developers are reached at `dev@qamarlabsllc.com`.
 
 ## Tech Stack
 
 - **Framework**: Next.js 15 (App Router) with React 19
 - **Language**: TypeScript 5 — note `strict: false` in [tsconfig.json](tsconfig.json)
-- **Styling**: Tailwind CSS v4 via `@tailwindcss/postcss`; global sheet at [src/styles/index.css](src/styles/index.css)
+- **Styling**: Tailwind CSS v4 via `@tailwindcss/postcss`; global sheet at [src/styles/index.css](src/styles/index.css).
+  **Breakpoints are redefined and are _not_ the framework defaults** — `xs: 450px`, `sm: 575px`,
+  `md: 768px`, `lg: 992px`, `xl: 1200px`, `2xl: 1400px`. A responsive class written against
+  Tailwind's stock scale (640/1024/1280) will fire at the wrong width.
 - **Theming**: `next-themes` (class-based dark mode), wired through [src/app/providers.tsx](src/app/providers.tsx)
 - **Forms**: Formik + Yup
 - **Email**: `@genezio/email-service`
+- **Motion**: `animejs` **v4** — authorized by [prds/initial-project-v1.0.md](prds/initial-project-v1.0.md)
+  but **not yet installed**. Do not import it until it is in `package.json`. See
+  [Motion and animation](#code-patterns).
 - **Lint/Format**: ESLint 9 (`eslint-config-next`), Prettier with `prettier-plugin-tailwindcss`
 - **Path alias**: `@/*` → `./src/*`
 - **No test runner is installed.** There is no Jest, Vitest, or Playwright config. Do not
@@ -100,10 +112,112 @@ That reserves the layout box, keeps the srcset to `1x`/`2x`, and avoids the `fil
 and imports `Providers` at the bottom of the file. Leave the import placement alone unless
 the task is specifically to fix it.
 
+**Secrets never carry the `NEXT_PUBLIC_` prefix.** Next.js **inlines every `NEXT_PUBLIC_*`
+variable into the client bundle**, where any visitor can read it. A token behind that prefix is
+public, not configured. Anything that needs a credential — mail, in particular — runs in a
+Route Handler under `src/app/api/`, reads a plain (non-prefixed) env var, and is called from the
+client by `fetch`.
+
+```tsx
+// ✅ src/app/api/contact/route.ts — token stays on the server
+export async function POST(req: Request) {
+  const token = process.env.EMAIL_SERVICE_TOKEN; // no NEXT_PUBLIC_
+  // …validate the body again here; `strict: false` will not catch a missing field
+}
+
+// ❌ never: a credential read in a "use client" component
+const token = process.env.NEXT_PUBLIC_EMAIL_SERVICE_TOKEN;
+```
+
+Client-side Formik/Yup validation is a UX affordance, not a control. **Re-validate every
+payload server-side** — anything reaching a route handler is untrusted.
+
+**Contact addresses are defined once**, in `src/constants/contact.ts`, and imported wherever
+they render. Do not re-declare an address in a component. The four privacy-policy components
+each historically declared their own `const CONTACT_EMAIL = …`, which is how
+[MusuahPrivacyPolicy.tsx:8](src/components/PrivacyPolicy/MusuahPrivacyPolicy.tsx#L8) drifted onto
+a **different domain** (`privacy@qamarlabs.com`, no `llc`) from its siblings. That discrepancy
+is known, is published legal copy, and is a business decision — **flag it, do not silently
+rewrite it.**
+
+Render addresses as selectable `mailto:` text — never an image, never obfuscated, never gated
+behind a form. Our primary audience is engineers who will not fill in a form. And when a form
+fails, **its error state must still surface the address**, so a broken send never costs a lead.
+
+**Motion is enhancement, never a precondition for reading the page.** Animation is `animejs`
+v4 only, confined to `"use client"` leaf components that wrap server-rendered children. Sections
+themselves stay server components — that is what keeps content in the SSR HTML.
+
+Two rules are non-negotiable, because breaking either hides content from real users:
+
+1. **Guard the *initial hidden state* on `prefers-reduced-motion`, not just the animation.** If
+   an element starts at `opacity: 0` and you merely skip the `animate()` call, that content is
+   **invisible forever** for the users who asked for less motion.
+2. **Animate `transform` and `opacity` only.** Layout properties (height, top, margin) cause CLS.
+
+Trigger on `IntersectionObserver`, never a `scroll` listener, and fire once — re-entering the
+viewport must not replay a completed reveal.
+
+```tsx
+"use client";
+import { animate, stagger } from "animejs"; // v4: named ESM exports…
+// …NOT v3's default `anime({ targets: … })`. Every v3 snippet you have seen is wrong here.
+
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (reduced) return; // …and the element's base CSS must already be visible when we bail
+```
+
+Content must remain readable with JavaScript disabled. Verify both conditions before calling
+motion work done — see [Validation](#validation).
+
+The reusable primitive is [Reveal](src/components/Common/Reveal.tsx): it renders children
+**visible** and hides them only inside a client effect, once it knows motion is permitted and
+it can bring them back. Compose it; do not reimplement it, and do not "simplify" it by moving
+the hidden state into markup — that reintroduces the exact bug it exists to prevent.
+
+**Decoration may go inert; it must never disappear.** The distinction matters:
+[Moon](src/components/Common/Moon.tsx) is background art, so under reduced motion it renders
+fully and simply stops rotating. `Reveal` guards *content*, so it must guarantee the content
+*appears*. Never hide a decorative element as a way of "respecting" reduced motion.
+
+**Text wins the pixels it occupies.** Where copy sits on top of background art — as the hero
+copy sits on the centred moon — the art must give ground: a **scrim** (a radial wash of the page
+background, strongest behind the text, fading to nothing at the art's edges) buys contrast where
+the words are while leaving the art crisp where it is actually seen. Body copy stays ≥ 4.5:1 in
+both themes; if it cannot, dim, scrim, shrink, or move the art. Never ship an unreadable hero.
+
+**Look at the page.** A legibility collision is invisible in a diff and obvious in a screenshot.
+So is an animation that is technically running but too slow to perceive — **an animation nobody
+can see is a bug, not a subtlety.** Prove motion by comparing two frames captured seconds apart,
+never by re-reading the duration constant.
+
 ## SDD and Workflow
 
-This repo is spec-driven. Every non-trivial change starts as a markdown file in
-[specs/](specs/) and moves through the five stages below. Do not skip to Implementation.
+This repo is spec-driven. Substantial work starts as a **PRD** in [prds/](prds/); every
+non-trivial change then becomes a markdown spec in [specs/](specs/) and moves through the
+stages below. Do not skip to Implementation.
+
+### Product Requirements (PRD)
+
+For a **new product surface or a change of direction** — not for a routine section edit — write
+`prds/<name>-v<major.minor>.md` first. It answers *why* and *for whom*, in this order:
+`Problem Statement`, `Users and Personas`, `Functional Requirements`, `User Stories`
+(Given/When/Then), `Constraints`, `Success Metrics`, `Out of Scope`, `Open Questions →
+Decisions`, `Testing Strategy`, `Timeline`.
+
+Two sections carry the weight and are usually done badly:
+
+- **Open Questions → Decisions.** An open question left open is a decision deferred onto the
+  implementer at the worst moment. Every question gets a decision and a rationale. If something
+  is genuinely blocking and unknowable from the code, say so explicitly and schedule it as the
+  first task — do not let it silently gate the work.
+- **Success Metrics** must be *measurable against a baseline you actually captured*. "Improves
+  conversion" is not a metric on a site with no analytics installed. `grep` returning zero
+  matches for a leaked token is.
+
+A PRD produces decisions; a spec turns them into observable outcomes. Reference the PRD from the
+spec's `# Overview` and `## Reference Code`. See
+[prds/initial-project-v1.0.md](prds/initial-project-v1.0.md) for the worked example.
 
 ### Specification
 
@@ -156,6 +270,18 @@ There is no test suite, so validation is build, lint, and eyes on the page:
    dark theme, and at mobile / tablet / desktop widths.
 4. For video work, confirm playback starts unprompted, loops, has no visible control bar,
    and stays silent.
+5. **For anything touching a credential**: after `npm run build`, `grep -r
+   "EMAIL_SERVICE_TOKEN" .next/static/` must return **nothing**. A build that ships the token
+   fails outright, however good the page looks.
+6. **For anything touching a form**: a `200` response is not proof of delivery. **Check the
+   inbox.** Then `curl -X POST` the route directly with an invalid payload and confirm the
+   server rejects it — bypassing the browser is the point of the check.
+7. **For motion work**: emulate `prefers-reduced-motion: reduce` (DevTools → Rendering) and
+   hard-reload — **every** animated element must be fully visible, with nothing stuck at
+   `opacity: 0`. Then disable JavaScript and reload — all content must still be readable.
+   These two catch the failure mode that silently hides content from the users least able to
+   tolerate it.
 
 Record the outcome honestly in the spec's `## Acceptance` section. If a check was skipped,
-say so rather than marking it passed.
+say so rather than marking it passed — a skipped check recorded as passed is worse than no
+check at all, because it spends trust that was never earned.

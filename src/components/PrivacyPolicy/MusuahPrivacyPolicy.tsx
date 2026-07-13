@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const CONTACT_EMAIL = "support@qamarlabsllc.com";
-const CONTACT_WEBSITE = "https://qamarlabs.netlify.app/contact";
-const PRIVACY_EMAIL = "privacy@qamarlabs.com";
+import { PRIVACY_EMAIL, SUPPORT_EMAIL } from "@/constants/contact";
+
+const CONTACT_EMAIL = SUPPORT_EMAIL;
+const CONTACT_WEBSITE = "https://qamarlabsllc.com/contact";
 const EFFECTIVE_DATE = "TBD";
 
 // ─── Primitives ──────────────────────────────────────────────────────────────

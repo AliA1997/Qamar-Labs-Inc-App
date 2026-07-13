@@ -2,7 +2,8 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { MailService } from '@genezio/email-service';
+
+import { DEV_EMAIL } from '@/constants/contact';
 
 const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -14,7 +15,9 @@ const Contact = () => {
     initialValues: {
       name: '',
       email: '',
-      message: ''
+      message: '',
+      // Honeypot: hidden from real users, so anything here came from a bot.
+      website: ''
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -32,28 +35,27 @@ const Contact = () => {
       setSubmitMessage('');
 
       try {
-        debugger;
-        // Prepare email data
-        const response = await MailService.sendMail({
-          emailServiceToken: process.env.NEXT_PUBLIC_EMAIL_SERVICE_TOKEN,
-          from: values.email,
-          to: process.env.NEXT_PUBLIC_MY_EMAIL,
-          subject: `Message from this person regarding Qamar Labs: ${values.name}`,
-          text: values.message
+        // Delivery happens in /api/contact so the mail token stays on the server.
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values)
         });
 
-        if (response.success) {
+        const result = await response.json();
+
+        if (response.ok && result.success) {
           setSubmitStatus('success');
           setSubmitMessage('Message sent successfully! We will get back to you within 48 hours.');
           resetForm();
         } else {
           setSubmitStatus('error');
-          setSubmitMessage('Failed to send message. Please try again later.');
+          setSubmitMessage(result.error || 'Failed to send message.');
         }
       } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending message:', error);
         setSubmitStatus('error');
-        setSubmitMessage('An error occurred. Please try again later.');
+        setSubmitMessage('An error occurred while sending your message.');
       }
     }
   });
@@ -68,10 +70,21 @@ const Contact = () => {
               data-wow-delay=".15s"
             >
               <h2 className="mb-3 text-2xl font-bold text-black dark:text-white sm:text-3xl lg:text-2xl xl:text-3xl">
-                Contact Us
+                Talk to a Developer
               </h2>
-              <p className="mb-12 text-base font-medium text-body-color">
-                We will try our best to respond in 48 hours
+              <p className="mb-4 text-base font-medium text-body-color dark:text-body-color-dark">
+                Tell us what you are building and we will tell you how we would specify it.
+                We respond within 48 hours.
+              </p>
+              <p className="mb-12 text-base font-medium text-body-color dark:text-body-color-dark">
+                Prefer email? Reach the engineers directly at{" "}
+                <a
+                  href={`mailto:${DEV_EMAIL}`}
+                  className="font-semibold text-primary hover:underline"
+                >
+                  {DEV_EMAIL}
+                </a>
+                .
               </p>
 
               {/* Status Messages */}
@@ -82,12 +95,30 @@ const Contact = () => {
               )}
               {submitStatus === 'error' && (
                 <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-xs">
-                  {submitMessage}
+                  {submitMessage} Please email us directly at{" "}
+                  <a href={`mailto:${DEV_EMAIL}`} className="font-semibold underline">
+                    {DEV_EMAIL}
+                  </a>
+                  .
                 </div>
               )}
 
               <form onSubmit={formik.handleSubmit}>
                 <div className="-mx-4 flex flex-wrap">
+                  {/* Honeypot: hidden from humans, irresistible to bots. */}
+                  <div className="absolute left-[-9999px]" aria-hidden="true">
+                    <label htmlFor="website">Do not fill this in</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      onChange={formik.handleChange}
+                      value={formik.values.website}
+                    />
+                  </div>
+
                   {/* Name Field */}
                   <div className="w-full px-4 md:w-1/2">
                     <div className="mb-8">

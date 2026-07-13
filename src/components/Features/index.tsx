@@ -1,4 +1,5 @@
 import SectionTitle from "../Common/SectionTitle";
+import Reveal from "../Common/Reveal";
 import SingleFeature from "./SingleFeature";
 import featuresData from "./featuresData";
 
@@ -8,16 +9,20 @@ const Features = () => {
       <section id="features" className="py-16 md:py-20 lg:py-28">
         <div className="container">
           <SectionTitle
-            title="How We Work"
-            paragraph="Four commitments shape every system we ship — from the specification we write before the first line of code, to the software you are still changing years later."
+            title="What You Get"
+            paragraph="Six commitments shape every system we ship — from the specification we write before the first line of code, to the software you are still changing years later."
             center
           />
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+          <Reveal
+            staggerChildren
+            staggerDelay={80}
+            className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3"
+          >
             {featuresData.map((feature) => (
               <SingleFeature key={feature.id} feature={feature} />
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

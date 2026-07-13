@@ -1,7 +1,9 @@
 import { Bullets, Para, Section } from "./common";
 
+import { SUPPORT_EMAIL } from "@/constants/contact";
+
 const LAST_UPDATED = "April 17, 2026";
-const CONTACT_EMAIL = "support@qamarlabsllc.com";
+const CONTACT_EMAIL = SUPPORT_EMAIL;
 
 export default function DawaarPrivacyPolicy() {
   return (
