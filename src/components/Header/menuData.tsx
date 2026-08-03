@@ -52,6 +52,19 @@ const menuData: Menu[] = [
     ]
   },
   {
+    id: 6,
+    title: "Rubrics",
+    newTab: false,
+    submenu: [
+      {
+        id: 1,
+        title: "Specification Grading Rubric",
+        path: "/rubrics/specification-grading",
+        newTab: false,
+      },
+    ],
+  },
+  {
     id: 4,
     title: "Contact Us",
     path: "/contact",
